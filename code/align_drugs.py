@@ -37,7 +37,7 @@ def align_mcs(new_mol, ref_mol):
 
 if __name__=="__main__":
     #old drug in crystal structure is MDMB Fubinaca:
-    mdmbfub_pdb = Chem.MolFromPDBFile('./processed_data/system_setup/MDMBFubinaca.pdb')
+    mdmbfub_pdb = Chem.MolFromPDBFile('./data/MDMBFubinaca.pdb')
     mdmbfub = Chem.MolFromSmiles('O=C(N[C@H](C(OC)=O)C(C)(C)C)C1=NN(CC2=CC=C(F)C=C2)C3=C1C=CC=C3')
     mdmbfub_pdb = AllChem.AssignBondOrdersFromTemplate(mdmbfub, mdmbfub_pdb)
 

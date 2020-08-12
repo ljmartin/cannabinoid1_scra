@@ -7,7 +7,7 @@ from simtk.openmm import *
 from simtk.unit import *
 
 from sys import stdout
-
+import sys
 """
 Makes a complex with the CHARMM-GUI system and our newly parameterized drug. 
 
@@ -15,11 +15,13 @@ Using parmed because then it's easy to just 'add' structures together in python.
 i.e. structure3 = structure1 + structure2
 """
 
+ID = str(sys.argv[1])
+
 #this is required to recognise DPPC molecules:
-topology.Topology.loadBondDefinitions('./raw_data/dppc.xml')
+topology.Topology.loadBondDefinitions('./data/dppc.xml')
 
 #Load up CHARMM-GUI pdb, and create a PARMED structure from it.  
-prot_pdb = PDBFile('./raw_data/step5_assembly.pdb')
+prot_pdb = PDBFile('./data/step5_assembly.pdb')
 omm_forcefield = app.ForceField('amber14-all.xml', 'amber14/tip3pfb.xml', 'amber14/lipid17.xml')
 prot_system = omm_forcefield.createSystem(prot_pdb.topology, rigidWater=False)
 prot_structure = parmed.openmm.load_topology(prot_pdb.topology,
@@ -28,8 +30,8 @@ prot_structure = parmed.openmm.load_topology(prot_pdb.topology,
 
 
 #Load up the parameterized drug system, and again make it into a parmed structure:
-drug_system = XmlSerializer.deserialize(open('./processed_data/system_setup/drug_system.xml').read())
-drug_pdbfile = PDBFile('./processed_data/system_setup/drug.pdb')
+drug_system = XmlSerializer.deserialize(open('./processed_data/off_systems/drug_system_'+ID+'.xml').read())
+drug_pdbfile = PDBFile('./processed_data/aligned_drugs/drug_'+ID+'.pdb')
 
 drug_structure = parmed.openmm.load_topology(drug_pdbfile.topology,
                                                 drug_system,
@@ -57,15 +59,15 @@ complex_system = complex_structure.createSystem(nonbondedMethod=PME,
                                                 rigidWater=True)
 
 #Save output:
-complex_structure.save('./processed_data/system_setup/complex_coords.pdb')
+complex_structure.save('./processed_data/complex_systems/complex_coords_'+ID+'.pdb')
 
 #PSF files don't like having numbered atom types, because at 10,000 VMD fails
 #So just set them all to zero.
 for a in complex_structure.atoms:
     a.type = '0'
-complex_structure.save('./processed_data/system_setup/complex_struct.psf', overwrite=True)
+complex_structure.save('./processed_data/complex_systems/complex_struct_'+ID+'.psf', overwrite=True)
 
-with open('./processed_data/system_setup/complex_system.xml', 'w') as f:
+with open('./processed_data/complex_systems/complex_system_'+ID+'.xml', 'w') as f:
     f.write(
             XmlSerializer.serialize(
                 complex_system
