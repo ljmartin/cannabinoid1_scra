@@ -59,7 +59,7 @@ complex_system = complex_structure.createSystem(nonbondedMethod=PME,
                                                 rigidWater=True)
 
 #Save output:
-complex_structure.save('./processed_data/complex_systems/complex_coords_'+ID+'.pdb')
+complex_structure.save('./processed_data/complex_systems/complex_coords_'+ID+'.pdb', overwrite=True)
 
 #PSF files don't like having numbered atom types, because at 10,000 VMD fails
 #So just set them all to zero.

@@ -5,7 +5,7 @@ import numpy as np
 
 
 
-def generate_conformers(mol, n=100):
+def generate_conformers(mol, n=1000):
     """Generates 3d structures for a molecule using Riniker's ETKDG method. N=number of conformers to make"""
     try:
         for _ in range(n):

@@ -1,5 +1,10 @@
 *ipynb
 complex*psf
-complex*pdb
-traj*dcd
+*dcd
 complex*xml
+*pdb
+docking/
+do_docking.sh
+make_docking_input.sh
+make_docking_output.sh
+smina.static
